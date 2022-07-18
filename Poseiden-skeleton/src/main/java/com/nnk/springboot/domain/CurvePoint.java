@@ -8,19 +8,39 @@ import java.sql.Timestamp;
 @Table(name = "curvepoint")
 public class CurvePoint {
 
+	@Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name="Id")
 	private Integer id;
+	
+	@Column(name="CurveId")
 	private Integer curveId;
+	
+	@Column(name="asOfDate")
 	private Timestamp asOfDate;
+	
+	@Column(name="term")
 	private Double term;
+	
+	@Column(name="value")
 	private Double value;
+	
+	@Column(name="creationDate")
 	private Timestamp creationDate;
 	
 	public CurvePoint(int id, double term, double value) {
-		this.id = id;
+		this.curveId = id;
 		this.term = term;
 		this.value = value;
 	}
 	
+	
+	
+	public CurvePoint() {
+	}
+
+
+
 	public Integer getId() {
 		return id;
 	}

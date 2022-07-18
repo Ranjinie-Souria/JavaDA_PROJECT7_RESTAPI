@@ -1,18 +1,38 @@
 package com.nnk.springboot.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "rulename")
 public class RuleName {
+	@Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name="Id")
 	private Integer id;
+	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="description")
 	private String description;
+	
+	@Column(name="json")
 	private String json;
+	
+	@Column(name="template")
 	private String template;
+	
+	@Column(name="sqlStr")
 	private String sqlStr;
+	
+	@Column(name="sqlPart")
 	private String sqlPart;
+	
 	public RuleName(String name, String description, String json, String template, String sqlStr, String sqlPart) {
 		this.name = name;
 		this.description = description;
@@ -21,6 +41,14 @@ public class RuleName {
 		this.sqlStr = sqlStr;
 		this.sqlPart = sqlPart;
 	}
+	
+	
+	
+	public RuleName() {
+	}
+
+
+
 	public Integer getId() {
 		return id;
 	}
