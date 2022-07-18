@@ -9,7 +9,6 @@ import javax.persistence.Table;
 @Table(name = "bidlist")
 public class BidList {
 
-	
 	private Integer BidListId;
 	private String account;
 	private String type;
