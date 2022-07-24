@@ -7,16 +7,19 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name="Id", unique = true, nullable = false)
     private Integer id;
     
+    @Column(name="username")
     private String username;
 
+    @Column(name="password")
     private String password;
 
-
+    @Column(name="fullname")
     private String fullname;
 
-
+    @Column(name="role")
     private String role;
     
     
