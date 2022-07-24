@@ -24,8 +24,8 @@ public class RuleNameService {
 		return ruleNameRepository.findById(id);
 	}
 	
-	public RuleName saveRuleName(RuleName trade) {
-		return ruleNameRepository.save(trade);		
+	public RuleName saveRuleName(RuleName ruleName) {
+		return ruleNameRepository.save(ruleName);		
 	}
 	
 	public void deleteRuleNameById(Integer id) {

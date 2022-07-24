@@ -16,16 +16,16 @@ public class RatingService {
 	@Autowired
 	private RatingRepository ratingRepository;
 	
-	public List<Rating> getRuleNames() {
+	public List<Rating> getRatingNames() {
 		return ratingRepository.findAll();
 	}
 	
-	public Optional<Rating> getRuleNameById(Integer id) {
+	public Optional<Rating> getRatingById(Integer id) {
 		return ratingRepository.findById(id);
 	}
 	
-	public Rating saveRatingName(Rating trade) {
-		return ratingRepository.save(trade);		
+	public Rating saveRatingName(Rating rating) {
+		return ratingRepository.save(rating);		
 	}
 	
 	public void deleteRatingNameById(Integer id) {
