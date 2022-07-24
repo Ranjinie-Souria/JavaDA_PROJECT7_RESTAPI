@@ -18,25 +18,37 @@ public class BidTests {
 
 	@Autowired
 	private BidListRepository bidListRepository;
+	
 
 	@Test
-	public void bidListTest() {
+	public void saveBidTest() {
 		BidList bid = new BidList("Account Test", "Type Test", 10d);
-
 		// Save
 		bid = bidListRepository.save(bid);
 		Assert.assertNotNull(bid.getBidListId());
 		Assert.assertEquals(bid.getBidQuantity(), 10d, 10d);
-
+	}
+	
+	@Test
+	public void updateBidTest() {
+		BidList bid = new BidList("Account Test", "Type Test", 10d);
 		// Update
 		bid.setBidQuantity(20d);
 		bid = bidListRepository.save(bid);
 		Assert.assertEquals(bid.getBidQuantity(), 20d, 20d);
-
+	}
+	
+	@Test
+	public void getBidTest() {
 		// Find
 		List<BidList> listResult = bidListRepository.findAll();
 		Assert.assertTrue(listResult.size() > 0);
-
+	}
+	
+	@Test
+	public void deleteBidTest() {
+		BidList bid = new BidList("Account Test", "Type Test", 10d);
+		bid = bidListRepository.save(bid);
 		// Delete
 		Integer id = bid.getBidListId();
 		bidListRepository.delete(bid);
