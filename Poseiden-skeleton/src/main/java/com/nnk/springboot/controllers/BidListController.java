@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.service.BidListService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,6 @@ public class BidListController {
 	
 	@Autowired
 	private BidListService bService;
-    // TODO: Inject Bid service
 
     @RequestMapping("/bidList/list")
     public String home(Model model)
@@ -35,7 +35,11 @@ public class BidListController {
 
     @PostMapping("/bidList/validate")
     public String validate(BidList bid, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return bid list
+    	if (!result.hasErrors()) {
+    		bService.saveBidList(bid);
+            model.addAttribute("bids", bService.getBidLists());
+            return "redirect:/bidList/list";
+        }
         return "bidList/add";
     }
 
