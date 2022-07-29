@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.domain.User;
 import com.nnk.springboot.service.BidListService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,20 @@ public class BidListController {
 
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Bid by Id and to model then show to the form
+        BidList bid = bService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
+        model.addAttribute("bid", bid);
         return "bidList/update";
     }
 
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id,BidList bidList,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Bid and return list Bid
+        if (result.hasErrors()) {
+            return "bidList/update";
+        }
+        bidList.setBidListId(id);
+        bService.saveBidList(bidList);
+        model.addAttribute("bids", bService.getBidLists());
         return "redirect:/bidList/list";
     }
 
