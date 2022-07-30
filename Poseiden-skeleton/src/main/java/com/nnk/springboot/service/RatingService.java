@@ -16,7 +16,7 @@ public class RatingService {
 	@Autowired
 	private RatingRepository ratingRepository;
 	
-	public List<Rating> getRatingNames() {
+	public List<Rating> getRatings() {
 		return ratingRepository.findAll();
 	}
 	
@@ -24,11 +24,11 @@ public class RatingService {
 		return ratingRepository.findById(id);
 	}
 	
-	public Rating saveRatingName(Rating rating) {
+	public Rating saveRating(Rating rating) {
 		return ratingRepository.save(rating);		
 	}
 	
-	public void deleteRatingNameById(Integer id) {
+	public void deleteRatingById(Integer id) {
 		ratingRepository.deleteById(id);
 	}
 
