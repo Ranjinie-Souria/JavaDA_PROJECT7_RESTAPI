@@ -12,7 +12,6 @@ import com.nnk.springboot.repositories.RatingRepository;
 @Service
 public class RatingService {
 	
-
 	@Autowired
 	private RatingRepository ratingRepository;
 	
