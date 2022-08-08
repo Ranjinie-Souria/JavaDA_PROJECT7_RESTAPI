@@ -30,6 +30,12 @@ public class BidListService {
 	public void deleteBidListById(Integer id) {
 		bidListRepository.deleteById(id);
 	}
+	
+	public List<BidList> getBidListByAccount(String account) {
+		return bidListRepository.findByAccount(account);
+	}
+	
+	
 
 
 }

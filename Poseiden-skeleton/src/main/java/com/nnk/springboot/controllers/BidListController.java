@@ -53,9 +53,12 @@ public class BidListController {
         if (result.hasErrors()) {
             return "bidList/update";
         }
-        bidList.setBidListId(id);
-        bService.saveBidList(bidList);
-        model.addAttribute("bids", bService.getBidLists());
+        else {
+        	bidList.setBidListId(id);
+        	bService.saveBidList(bidList);
+        	model.addAttribute("bids", bService.getBidLists());
+        }
+        
         return "redirect:/bidList/list";
     }
 
