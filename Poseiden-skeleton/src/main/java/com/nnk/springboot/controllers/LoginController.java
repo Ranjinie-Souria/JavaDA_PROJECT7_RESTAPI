@@ -38,10 +38,5 @@ public class LoginController {
     
 
     
-    @GetMapping("/error")
-    public String error(ModelMap model) {
-        String errorMessage= "You are not authorized for the requested data.";
-        model.addAttribute("errorMsg", errorMessage);
-        return "403";
-    }
+
 }
