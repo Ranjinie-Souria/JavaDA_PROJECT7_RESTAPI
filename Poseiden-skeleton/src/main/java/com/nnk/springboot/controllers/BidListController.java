@@ -2,6 +2,11 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.service.BidListService;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,34 +15,46 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
 public class BidListController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(BidListController.class);
+
 	@Autowired
 	private BidListService bService;
 
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
+    	logger.info("Showing all bids");
     	model.addAttribute("bids", bService.getBidLists());
         return "bidList/list";
     }
 
     @GetMapping("/bidList/add")
-    public String addBidForm(BidList bid) {
-        return "bidList/add";
+    public ModelAndView addBidForm(BidList bid) {
+    	logger.info("Showing add form");
+        return new ModelAndView("bidList/add");
     }
 
     @PostMapping("/bidList/validate")
-    public String validate(BidList bid, BindingResult result, Model model) {
+    public ModelAndView validate(@Valid BidList bid, BindingResult result, Model model) {
     	if (!result.hasErrors()) {
+    		ModelAndView modelAndView =  new ModelAndView("redirect:/bidList/list");
+    		modelAndView.addObject("bids", bService.getBidLists());
     		bService.saveBidList(bid);
-            model.addAttribute("bids", bService.getBidLists());
-            return "redirect:/bidList/list";
+    		logger.info("Added bid : "+bid);
+            return modelAndView;
         }
-        return "bidList/add";
+    	ModelAndView modelAndView = new ModelAndView("bidList/add");
+    	modelAndView.addObject("account", result.getFieldError("account"));
+    	modelAndView.addObject("type", result.getFieldError("type"));
+    	modelAndView.addObject("bidQuantity", result.getFieldError("bidQuantity"));
+    	logger.error(result.getErrorCount()+" errors : "+result.getAllErrors());
+    	return modelAndView;
     }
 
     @GetMapping("/bidList/update/{id}")
@@ -48,18 +65,24 @@ public class BidListController {
     }
 
     @PostMapping("/bidList/update/{id}")
-    public String updateBid(@PathVariable("id") Integer id,BidList bidList,
+    public ModelAndView updateBid(@PathVariable("id") Integer id,BidList bidList,
                              BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "bidList/update";
+        	ModelAndView modelAndView = new ModelAndView("bidList/update");
+        	modelAndView.addObject("account", result.getFieldError("account"));
+        	modelAndView.addObject("type", result.getFieldError("type"));
+        	modelAndView.addObject("bidQuantity", result.getFieldError("bidQuantity"));
+        	logger.error(result.getErrorCount()+" errors : "+result.getAllErrors());
+        	return modelAndView;
         }
         else {
+        	ModelAndView modelAndView = new ModelAndView("redirect:/bidList/list");
         	bidList.setBidListId(id);
         	bService.saveBidList(bidList);
-        	model.addAttribute("bids", bService.getBidLists());
+        	modelAndView.addObject("bids", bService.getBidLists());
+        	logger.info("Updated bid with id : "+id);
+        	return modelAndView;
         }
-        
-        return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/delete/{id}")
@@ -67,6 +90,7 @@ public class BidListController {
     	bService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
     	bService.deleteBidListById(id);
     	model.addAttribute("bids", bService.getBidLists());
+    	logger.info("Deleted bid with id : "+id);
         return "redirect:/bidList/list";
     }
 }

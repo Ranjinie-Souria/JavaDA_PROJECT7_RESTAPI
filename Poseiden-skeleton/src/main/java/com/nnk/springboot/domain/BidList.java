@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "bidlist")
@@ -18,12 +21,16 @@ public class BidList {
 	@Column(name="BidListId")
 	private Integer BidListId;
 	
+	@NotEmpty(message = "Account cannot be empty")
 	@Column(name="account")
 	private String account;
 	
+	@NotEmpty(message = "Type cannot be empty")
 	@Column(name="type")
 	private String type;
 	
+	@NotNull(message = "Bid Quantity cannot be empty")
+	@DecimalMin(message = "Bid Quantity must be a number", value = "0")	
 	@Column(name="bidQuantity")
 	private Double bidQuantity;
 	

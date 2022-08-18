@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "rulename")
@@ -15,21 +16,27 @@ public class RuleName {
 	@Column(name="Id")
 	private Integer id;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="name")
 	private String name;
-	
+
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="description")
 	private String description;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="json")
 	private String json;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="template")
 	private String template;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="sqlStr")
 	private String sqlStr;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="sqlPart")
 	private String sqlPart;
 	

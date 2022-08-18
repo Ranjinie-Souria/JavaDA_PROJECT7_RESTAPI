@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -19,14 +22,20 @@ public class Trade {
 	@Column(name="TradeId")
 	private Integer tradeId;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="account")
 	private String account;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="type")
 	private String type;
-	
+
+
 	@Column(name="buyQuantity")
+	@NotNull(message = "Cannot be empty")
+	@DecimalMin(message = "must be a number", value = "0")
 	private Double buyQuantity;
+	
 	
 	@Column(name="sellQuantity")
 	private Double sellQuantity;

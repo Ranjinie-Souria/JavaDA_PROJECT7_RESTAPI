@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -10,15 +11,19 @@ public class User {
     @Column(name="Id", unique = true, nullable = false)
     private Integer id;
     
+    @NotEmpty(message = "Cannot be empty")
     @Column(name="username")
     private String username;
 
+    @ValidPassword
     @Column(name="password")
     private String password;
 
+    @NotEmpty(message = "Cannot be empty")
     @Column(name="fullname")
     private String fullname;
 
+    @NotEmpty(message = "You must choose a role")
     @Column(name="role")
     private String role;
     

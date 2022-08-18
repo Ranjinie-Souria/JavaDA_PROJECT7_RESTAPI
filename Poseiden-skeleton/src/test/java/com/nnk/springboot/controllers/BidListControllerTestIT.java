@@ -7,19 +7,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.NestedServletException;
-
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.MyUserDetails;
 import com.nnk.springboot.domain.User;
@@ -29,15 +27,16 @@ import com.nnk.springboot.service.BidListService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BidListControllerTest {
+@ActiveProfiles("local")
+class BidListControllerTestIT {
 	
-	@InjectMocks
+	@Autowired
 	private BidListService bService;
 	
 	@Autowired
     private MockMvc mockMvc;
 	
-	@Mock
+	@Autowired
 	private BidListRepository bRepo;
 
 	private MyUserDetails adminDetails = new MyUserDetails(new User(0,"admin","admin","admin","ADMIN"));
@@ -60,47 +59,46 @@ class BidListControllerTest {
 	@Test
     void addBid() throws Exception {
 		mockMvc.perform(post("/bidList/validate")).andExpect(redirectedUrl("http://localhost/login"));
-		
-		Assertions.assertThrows(NestedServletException.class, () -> 		mockMvc.perform(post("/bidList/validate")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE).with(user(userDetails)))
-				.andExpect(status().isFound()));		
+		int size = bService.getBidLists().size();
 		mockMvc.perform(post("/bidList/validate")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE).with(user(userDetails))
 				.param("type","type")
 				.param("account","account")
 				.param("bidQuantity","1"))
 				.andExpect(redirectedUrl("/bidList/list"));
-//		BidList bid = new BidList("type","account",1);
-//		System.out.println(bService.getBidLists().size());
-//		Assertions.assertTrue(bService.getBidListByAccount("account").contains(bid));
+		Assertions.assertTrue(bService.getBidLists().size()==size+1);
 	}
 	
 	@Test
     void updateBid() throws Exception {
 		BidList bidL = new BidList("type","account",1);
-		Optional<BidList> bid = Optional.of(bidL);
-		when(bRepo.findById(0)).thenReturn(bid);
-		mockMvc.perform(get("/bidList/update/0")).andExpect(redirectedUrl("http://localhost/login"));
+		bidL.setBidListId(1);
 		
-		mockMvc.perform(post("/bidList/update/0")
+		Optional<BidList> bid = Optional.of(bidL);
+		when(bRepo.findById(1)).thenReturn(bid);
+		
+		
+		mockMvc.perform(post("/bidList/update/1")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE).with(user(userDetails))
 				.param("type","type")
 				.param("account","account")
 				.param("bidQuantity","5"))
 				.andExpect(redirectedUrl("/bidList/list"));
-		//Assertions.assertEquals(5, bService.getBidListById(0).get().getBidQuantity());
+		Assertions.assertEquals(5, bService.getBidListById(1).get().getBidQuantity());
 	}
 	
 	@Test
 	void delete() throws Exception {
+		int size = bService.getBidLists().size();
 		BidList bid = new BidList("type","account",1);
-		bid.setBidListId(0);
-//		bService.saveBidList(bid);
-//		Assertions.assertEquals(Optional.of(bid), bService.getBidListById(0));
-//		mockMvc.perform(get("/bidList/delete/0")
-//				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE).with(user(userDetails)))
-//				.andExpect(redirectedUrl("/bidList/list"));
-		Assertions.assertEquals(Optional.empty(),bService.getBidListById(0));
+		bid.setBidListId(1);
+		bService.saveBidList(bid);
+		Assertions.assertEquals(size+1, bService.getBidLists().size());
+		size = bService.getBidLists().size();
+		mockMvc.perform(get("/bidList/delete/1")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE).with(user(userDetails)))
+				.andExpect(redirectedUrl("/bidList/list"));
+		Assertions.assertEquals(size-1,bService.getBidLists().size());
 		
 	}
 	

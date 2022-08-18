@@ -1,6 +1,10 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import java.sql.Timestamp;
 
 
@@ -12,17 +16,25 @@ public class CurvePoint {
     @GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name="Id")
 	private Integer id;
-	
+
+	@NotNull(message = "id cannot be empty")
+	@DecimalMin(message = "must be a number", value = "0")
 	@Column(name="CurveId")
 	private Integer curveId;
 	
 	@Column(name="asOfDate")
 	private Timestamp asOfDate;
-	
+
+
 	@Column(name="term")
+	@NotNull(message = "term cannot be empty")
+	@DecimalMin(message = "must be a number", value = "0")
 	private Double term;
-	
+
+
 	@Column(name="value")
+	@NotNull(message = "value cannot be empty")
+	@DecimalMin(message = "must be a number", value = "0")
 	private Double value;
 	
 	@Column(name="creationDate")

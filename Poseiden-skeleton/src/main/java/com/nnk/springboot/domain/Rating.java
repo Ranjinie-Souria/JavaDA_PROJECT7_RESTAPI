@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "rating")
@@ -16,16 +19,21 @@ public class Rating {
 	@Column(name="Id")
 	private Integer id;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="moodysRating")
 	private String moodysRating;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="sandPRating")
 	private String sandPRating;
 	
+	@NotEmpty(message = "Cannot be empty")
 	@Column(name="fitchRating")
 	private String fitchRating;
 	
 	@Column(name="orderNumber")
+	@NotNull(message = "Cannot be empty")
+	@DecimalMin(message = "must be a number", value = "0")
 	private Integer orderNumber;
 	
 	public Rating(String moodysRating, String sandPRating, String fitchRating, int orderNumber) {
