@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class TradeController {
@@ -39,45 +40,51 @@ public class TradeController {
     }
 
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade, BindingResult result, Model model) {
+    public ModelAndView validate(@Valid Trade trade, BindingResult result) {
     	if (!result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("redirect:/trade/list");
     		tSer.saveTrade(trade);
-    		model.addAttribute("trades", tSer.getTrades());
+    		model.addObject("trades", tSer.getTrades());
     		logger.info("Added trade");
-            return "redirect:/trade/list";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("trade/add");
     	logger.error("Errors "+result.getAllErrors());
-        return "trade/add";
+        return model;
     }
 
     @GetMapping("/trade/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView showUpdateForm(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("trade/update");
     	Trade trade = tSer.getTradeById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trade Id:" + id));
-    	model.addAttribute("trade", trade);
+    	model.addObject("trade", trade);
     	logger.info("Showing update form");
-        return "trade/update";
+        return model;
     }
 
     @PostMapping("/trade/update/{id}")
-    public String updateTrade(@PathVariable("id") Integer id,@Valid  Trade trade,
-                             BindingResult result, Model model) {
+    public ModelAndView updateTrade(@PathVariable("id") Integer id,@Valid  Trade trade,
+                             BindingResult result) {
     	if (result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("trade/update");
     		logger.error("Errors "+result.getAllErrors());
-            return "trade/update";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("redirect:/trade/list");
     	trade.setTradeId(id);
     	tSer.saveTrade(trade);
-    	model.addAttribute("trades", tSer.getTrades());
+    	model.addObject("trades", tSer.getTrades());
     	logger.info("Updated trade");
-        return "redirect:/trade/list";
+        return model;
     }
 
     @GetMapping("/trade/delete/{id}")
-    public String deleteTrade(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView deleteTrade(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("redirect:/trade/list");
     	tSer.getTradeById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trades Id:" + id));
     	tSer.deleteTradeById(id);
-        model.addAttribute("trades", tSer.getTrades());
+        model.addObject("trades", tSer.getTrades());
         logger.info("Deleted trade");
-        return "redirect:/trade/list";
+        return model;
     }
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyUserDetails.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Poseidon</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.domain</a> &gt; <span class="el_source">MyUserDetails.java</span></div><h1>MyUserDetails.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.domain;
+
+import java.util.Arrays;
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class MyUserDetails implements UserDetails{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private User user;
+
+	
+<span class="nc" id="L18">	public MyUserDetails(User user) {</span>
+<span class="nc" id="L19">		this.setUser(user);</span>
+<span class="nc" id="L20">	}</span>
+
+
+	@Override
+	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<span class="nc" id="L25">		return Arrays.asList(new SimpleGrantedAuthority(this.getRole()));</span>
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+<span class="nc" id="L29">		return true;</span>
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+<span class="nc" id="L34">		return true;</span>
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+<span class="nc" id="L39">		return true;</span>
+	}
+
+	@Override
+	public boolean isEnabled() {
+<span class="nc" id="L44">		return true;</span>
+	}
+
+
+	@Override
+	public String getPassword() {
+<span class="nc" id="L50">		return this.user.getPassword();</span>
+	}
+
+
+	@Override
+	public String getUsername() {
+<span class="nc" id="L56">		return this.user.getUsername();</span>
+	}
+	
+	public String getFullname() {
+<span class="nc" id="L60">		return this.user.getFullname();</span>
+	}
+	
+	public String getRole() {
+<span class="nc" id="L64">		return this.user.getRole();</span>
+	}
+
+
+	public User getUser() {
+<span class="nc" id="L69">		return user;</span>
+	}
+
+
+	public void setUser(User user) {
+<span class="nc" id="L74">		this.user = user;</span>
+<span class="nc" id="L75">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RuleName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Poseidon</a> &gt; <a href="index.source.html" class="el_package">com.nnk.springboot.domain</a> &gt; <span class="el_source">RuleName.java</span></div><h1>RuleName.java</h1><pre class="source lang-java linenums">package com.nnk.springboot.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+@Entity
+@Table(name = &quot;rulename&quot;)
+public class RuleName {
+	@Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name=&quot;Id&quot;)
+	private Integer id;
+	
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;name&quot;)
+	private String name;
+
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;description&quot;)
+	private String description;
+	
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;json&quot;)
+	private String json;
+	
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;template&quot;)
+	private String template;
+	
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;sqlStr&quot;)
+	private String sqlStr;
+	
+	@NotEmpty(message = &quot;Cannot be empty&quot;)
+	@Column(name=&quot;sqlPart&quot;)
+	private String sqlPart;
+	
+<span class="nc" id="L43">	public RuleName(String name, String description, String json, String template, String sqlStr, String sqlPart) {</span>
+<span class="nc" id="L44">		this.name = name;</span>
+<span class="nc" id="L45">		this.description = description;</span>
+<span class="nc" id="L46">		this.json = json;</span>
+<span class="nc" id="L47">		this.template = template;</span>
+<span class="nc" id="L48">		this.sqlStr = sqlStr;</span>
+<span class="nc" id="L49">		this.sqlPart = sqlPart;</span>
+<span class="nc" id="L50">	}</span>
+	
+	
+	
+<span class="fc" id="L54">	public RuleName() {</span>
+<span class="fc" id="L55">	}</span>
+
+
+
+	public Integer getId() {
+<span class="nc" id="L60">		return id;</span>
+	}
+	public void setId(Integer id) {
+<span class="nc" id="L63">		this.id = id;</span>
+<span class="nc" id="L64">	}</span>
+	public String getName() {
+<span class="nc" id="L66">		return name;</span>
+	}
+	public void setName(String name) {
+<span class="nc" id="L69">		this.name = name;</span>
+<span class="nc" id="L70">	}</span>
+	public String getDescription() {
+<span class="nc" id="L72">		return description;</span>
+	}
+	public void setDescription(String description) {
+<span class="nc" id="L75">		this.description = description;</span>
+<span class="nc" id="L76">	}</span>
+	public String getJson() {
+<span class="nc" id="L78">		return json;</span>
+	}
+	public void setJson(String json) {
+<span class="nc" id="L81">		this.json = json;</span>
+<span class="nc" id="L82">	}</span>
+	public String getTemplate() {
+<span class="nc" id="L84">		return template;</span>
+	}
+	public void setTemplate(String template) {
+<span class="nc" id="L87">		this.template = template;</span>
+<span class="nc" id="L88">	}</span>
+	public String getSqlStr() {
+<span class="nc" id="L90">		return sqlStr;</span>
+	}
+	public void setSqlStr(String sqlStr) {
+<span class="nc" id="L93">		this.sqlStr = sqlStr;</span>
+<span class="nc" id="L94">	}</span>
+	public String getSqlPart() {
+<span class="nc" id="L96">		return sqlPart;</span>
+	}
+	public void setSqlPart(String sqlPart) {
+<span class="nc" id="L99">		this.sqlPart = sqlPart;</span>
+<span class="nc" id="L100">	}</span>
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

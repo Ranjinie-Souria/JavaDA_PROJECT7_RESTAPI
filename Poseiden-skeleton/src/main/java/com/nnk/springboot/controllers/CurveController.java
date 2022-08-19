@@ -40,7 +40,7 @@ public class CurveController {
     }
 
     @PostMapping("/curvePoint/validate")
-    public ModelAndView validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
+    public ModelAndView validate(@Valid CurvePoint curvePoint, BindingResult result) {
     	if (!result.hasErrors()) {
     		ModelAndView modelAndView =  new ModelAndView("redirect:/curvePoint/list");       
     		cSer.saveCurvePoint(curvePoint);
@@ -65,25 +65,28 @@ public class CurveController {
     }
 
     @PostMapping("/curvePoint/update/{id}")
-    public String updateCurve(@PathVariable("id") Integer id,@Valid CurvePoint curvePoint,
-                             BindingResult result, Model model) {
+    public ModelAndView updateCurve(@PathVariable("id") Integer id,@Valid CurvePoint curvePoint,
+                             BindingResult result) {
     	if (result.hasErrors()) {
+    		ModelAndView modelAndView = new ModelAndView("curvePoint/update");
     		logger.error("Errors "+result.getAllErrors());
-            return "curvePoint/update";
+            return modelAndView;
         }
+    	ModelAndView modelAndView = new ModelAndView("redirect:/curvePoint/list");
     	curvePoint.setId(id);
     	cSer.saveCurvePoint(curvePoint);
-        model.addAttribute("curves", cSer.getCurvePoints());
+    	modelAndView.addObject("curves", cSer.getCurvePoints());
         logger.info("updated");
-        return "redirect:/curvePoint/list";
+        return modelAndView;
     }
 
     @GetMapping("/curvePoint/delete/{id}")
-    public String deleteCurve(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView deleteCurve(@PathVariable("id") Integer id) {
+    	ModelAndView modelAndView = new ModelAndView("redirect:/curvePoint/list");
     	cSer.getCurvePointById(id).orElseThrow(() -> new IllegalArgumentException("Invalid CurvePoint Id:" + id));
     	cSer.deleteCurvePointById(id);
-    	model.addAttribute("curves", cSer.getCurvePoints());
+    	modelAndView.addObject("curves", cSer.getCurvePoints());
     	logger.info("Showing delete form");
-        return "redirect:/curvePoint/list";
+        return modelAndView;
     }
 }

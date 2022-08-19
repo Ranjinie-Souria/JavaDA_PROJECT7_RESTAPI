@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RuleNameController {
@@ -39,45 +40,51 @@ public class RuleNameController {
     }
 
     @PostMapping("/ruleName/validate")
-    public String validate( @Valid RuleName ruleName, BindingResult result, Model model) {
+    public ModelAndView validate( @Valid RuleName ruleName, BindingResult result) {
     	if (!result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("redirect:/ruleName/list");
     		rSer.saveRuleName(ruleName);
-    		model.addAttribute("ruleNames", rSer.getRuleNames());
+    		model.addObject("ruleNames", rSer.getRuleNames());
     		logger.info("Added ruleName");
-            return "redirect:/ruleName/list";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("ruleName/add");
     	logger.error("Errors "+result.getAllErrors());
-        return "ruleName/add";
+        return model;
     }
 
     @GetMapping("/ruleName/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView showUpdateForm(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("ruleName/update");
     	RuleName ruleName = rSer.getRuleNameById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trade Id:" + id));
-    	model.addAttribute("ruleName", ruleName);
+    	model.addObject("ruleName", ruleName);
     	logger.info("Showing update form");
-        return "ruleName/update";
+        return model;
     }
 
     @PostMapping("/ruleName/update/{id}")
-    public String updateRuleName(@PathVariable("id") Integer id,@Valid RuleName ruleName,
-                             BindingResult result, Model model) {
+    public ModelAndView updateRuleName(@PathVariable("id") Integer id,@Valid RuleName ruleName,
+                             BindingResult result) {
     	if (result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("redirect:/ruleName/update");
     		logger.error("Errors "+result.getAllErrors());
-            return "ruleName/update";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("redirect:/ruleName/list");
     	ruleName.setId(id);
     	rSer.saveRuleName(ruleName);
-    	model.addAttribute("ruleNames", rSer.getRuleNames());
+    	model.addObject("ruleNames", rSer.getRuleNames());
     	logger.info("updated");
-        return "redirect:/ruleName/list";
+        return model;
     }
 
     @GetMapping("/ruleName/delete/{id}")
-    public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView deleteRuleName(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("redirect:/ruleName/list");
     	rSer.getRuleNameById(id).orElseThrow(() -> new IllegalArgumentException("Invalid trades Id:" + id));
     	rSer.deleteRuleNameById(id);
-        model.addAttribute("ruleNames", rSer.getRuleNames());
+        model.addObject("ruleNames", rSer.getRuleNames());
         logger.info("Showing delete form");
-        return "redirect:/ruleName/list";
+        return model;
     }
 }

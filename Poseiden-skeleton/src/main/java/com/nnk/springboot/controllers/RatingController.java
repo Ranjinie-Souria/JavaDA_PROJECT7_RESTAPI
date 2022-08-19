@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RatingController {
@@ -39,45 +40,51 @@ public class RatingController {
     }
 
     @PostMapping("/rating/validate")
-    public String validate(@Valid Rating rating, BindingResult result, Model model) {
+    public ModelAndView validate(@Valid Rating rating, BindingResult result) {
     	if (!result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("redirect:/rating/list");
     		rSer.saveRating(rating);
-            model.addAttribute("ratings", rSer.getRatings());
+            model.addObject("ratings", rSer.getRatings());
             logger.info("Added rating : "+rating);
-            return "redirect:/rating/list";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("rating/add");
     	logger.error("error : "+result.getAllErrors());
-        return "rating/add";
+        return model;
     }
 
     @GetMapping("/rating/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView showUpdateForm(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("rating/update");
     	Rating rating = rSer.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
-    	model.addAttribute("rating", rating);
+    	model.addObject("rating", rating);
     	logger.info("Showing update form");
-        return "rating/update";
+        return model;
     }
 
     @PostMapping("/rating/update/{id}")
-    public String updateRating(@PathVariable("id") Integer id,@Valid Rating rating,
-                             BindingResult result, Model model) {
+    public ModelAndView updateRating(@PathVariable("id") Integer id,@Valid Rating rating,
+                             BindingResult result) {
     	if (result.hasErrors()) {
+    		ModelAndView model =  new ModelAndView("rating/update");
     		logger.error("error : "+result.getAllErrors());
-            return "rating/update";
+            return model;
         }
+    	ModelAndView model =  new ModelAndView("redirect:/rating/list");
     	rating.setId(id);
     	rSer.saveRating(rating);
-        model.addAttribute("ratings", rSer.getRatings());
+    	model.addObject("ratings", rSer.getRatings());
         logger.info("Updated rating");
-        return "redirect:/rating/list";
+        return model;
     }
 
     @GetMapping("/rating/delete/{id}")
-    public String deleteRating(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView deleteRating(@PathVariable("id") Integer id) {
+    	ModelAndView model =  new ModelAndView("redirect:/rating/list");
     	rSer.getRatingById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
     	rSer.deleteRatingById(id);
-        model.addAttribute("ratings", rSer.getRatings());
+    	model.addObject("ratings", rSer.getRatings());
         logger.info("Showing delete form");
-        return "redirect:/rating/list";
+        return model;
     }
 }

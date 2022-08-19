@@ -41,7 +41,7 @@ public class BidListController {
     }
 
     @PostMapping("/bidList/validate")
-    public ModelAndView validate(@Valid BidList bid, BindingResult result, Model model) {
+    public ModelAndView validate(@Valid BidList bid, BindingResult result) {
     	if (!result.hasErrors()) {
     		ModelAndView modelAndView =  new ModelAndView("redirect:/bidList/list");
     		modelAndView.addObject("bids", bService.getBidLists());
@@ -66,7 +66,7 @@ public class BidListController {
 
     @PostMapping("/bidList/update/{id}")
     public ModelAndView updateBid(@PathVariable("id") Integer id,BidList bidList,
-                             BindingResult result, Model model) {
+                             BindingResult result) {
         if (result.hasErrors()) {
         	ModelAndView modelAndView = new ModelAndView("bidList/update");
         	modelAndView.addObject("account", result.getFieldError("account"));
@@ -86,11 +86,12 @@ public class BidListController {
     }
 
     @GetMapping("/bidList/delete/{id}")
-    public String deleteBid(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView deleteBid(@PathVariable("id") Integer id) {
+    	ModelAndView modelAndView = new ModelAndView("redirect:/bidList/list");
     	bService.getBidListById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
     	bService.deleteBidListById(id);
-    	model.addAttribute("bids", bService.getBidLists());
+    	modelAndView.addObject("bids", bService.getBidLists());
     	logger.info("Deleted bid with id : "+id);
-        return "redirect:/bidList/list";
+        return modelAndView;
     }
 }
