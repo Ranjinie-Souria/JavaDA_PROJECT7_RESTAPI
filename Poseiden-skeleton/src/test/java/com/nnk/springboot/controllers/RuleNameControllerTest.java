@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -19,8 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.nnk.springboot.domain.CurvePoint;
-import com.nnk.springboot.service.CurvePointService;
+import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.service.RuleNameService;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("local")
@@ -30,71 +29,71 @@ class RuleNameControllerTest {
 	
 
 	    @Mock
-	    CurvePointService service;
+	    RuleNameService service;
 	    @InjectMocks
-	    CurveController controller;
+	    RuleNameController controller;
 	    
 	    @Test
 	    void addTest() throws Exception {
 
-	    	CurvePoint curve = new CurvePoint(0,0,0);
+	    	RuleName ruleName = new RuleName("name", "description","json","template","sqlStr", "sqlPart");
 	    	BindingResult result = mock(BindingResult.class);
 
-	        controller.validate(curve, result);
+	        controller.validate(ruleName, result);
 
-	        verify(service).saveCurvePoint(curve);
+	        verify(service).saveRuleName(ruleName);
 	    }
 
 
 	    @Test
 	    void addTestNull() {
-	    	CurvePoint curve = null;
+	    	RuleName ruleName = null;
 	    	BindingResult result = mock(BindingResult.class);
-	    	ModelAndView modelAndView = new ModelAndView("curvePoint/add");
+	    	ModelAndView modelAndView = new ModelAndView("RuleName/add");
 	    	
-	        assertThat(controller.validate(curve, result) == modelAndView);
+	        assertThat(controller.validate(ruleName, result) == modelAndView);
 	        
 	    }
 	    
 	    @Test
 	    void updateTest() throws Exception {
 	    	
-	    	CurvePoint curve = new CurvePoint(0,0,0);
-	    	curve.setCurveId(1);
+	    	RuleName ruleName = new RuleName("name", "description","json","template","sqlStr", "sqlPart");
+	    	ruleName.setId(1);
 	    	BindingResult result = mock(BindingResult.class);
-	    	CurvePoint edited = new CurvePoint(0,2,0);
+	    	RuleName edited = new RuleName("edited", "description","json","template","sqlStr", "sqlPart");
 	    	
-	        controller.updateCurve(1, edited, result);
-	        verify(service).saveCurvePoint(edited);
+	        controller.updateRuleName(1, edited, result);
+	        verify(service).saveRuleName(edited);
 	    }
 
 
 	    @Test
 	    void updateNull() {
-	    	CurvePoint curve = new CurvePoint(0,0,0);
+	    	RuleName ruleName = new RuleName("name", "description","json","template","sqlStr", "sqlPart");
 	    	BindingResult result = mock(BindingResult.class);
 	    	ModelAndView modelAndView = new ModelAndView("curvePoint/update");
 	    	
-	        assertThat(controller.updateCurve(-50,curve, result) == modelAndView);
+	        assertThat(controller.updateRuleName(-50,ruleName, result) == modelAndView);
 	        
 	    }
 	    
 	    @Test
 	    void deleteTest() throws Exception {
 	    	
-	    	CurvePoint curve = new CurvePoint(0,0,0);
-	    	curve.setCurveId(1);
+	    	RuleName ruleName = new RuleName("name", "description","json","template","sqlStr", "sqlPart");
+	    	ruleName.setId(1);
 	    	
-	        when(service.getCurvePointById(1)).thenReturn(Optional.of(curve));
+	        when(service.getRuleNameById(1)).thenReturn(Optional.of(ruleName));
 
-	        controller.deleteCurve(1);
+	        controller.deleteRuleName(1);
 	        
-	        verify(service).deleteCurvePointById(1);
+	        verify(service).deleteRuleNameById(1);
 	    }
 	    
 	    @Test
 	    void deleteNull() {	    	
-	        assertThrows(IllegalArgumentException.class, () -> controller.deleteCurve(-50));
+	        assertThrows(IllegalArgumentException.class, () -> controller.deleteRuleName(-50));
 	        
 	    }
 

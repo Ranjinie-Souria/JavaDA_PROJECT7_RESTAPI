@@ -18,82 +18,82 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.nnk.springboot.domain.CurvePoint;
-import com.nnk.springboot.service.CurvePointService;
+import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.service.TradeService;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("local")
 @AutoConfigureMockMvc
 @SpringBootTest
-class CurveControllerTest {
+class TradeControllerTest {
 	
 
 	    @Mock
-	    CurvePointService service;
+	    TradeService service;
 	    @InjectMocks
-	    CurveController controller;
+	    TradeController controller;
 	    
 	    @Test
 	    void addTest() throws Exception {
 
-	    	CurvePoint curve = new CurvePoint(0,0,0);
+	    	Trade trade = new Trade("account","type",1.0);
 	    	BindingResult result = mock(BindingResult.class);
 
-	        controller.validate(curve, result);
+	        controller.validate(trade, result);
 
-	        verify(service).saveCurvePoint(curve);
+	        verify(service).saveTrade(trade);
 	    }
 
 
 	    @Test
 	    void addTestNull() {
-	    	CurvePoint curve = null;
+	    	Trade trade = null;
 	    	BindingResult result = mock(BindingResult.class);
-	    	ModelAndView modelAndView = new ModelAndView("curvePoint/add");
+	    	ModelAndView modelAndView = new ModelAndView("bidList/add");
 	    	
-	        assertThat(controller.validate(curve, result) == modelAndView);
+	        assertThat(controller.validate(trade, result)== modelAndView);
 	        
 	    }
 	    
 	    @Test
 	    void updateTest() throws Exception {
 	    	
-	    	CurvePoint curve = new CurvePoint(0,0,0);
-	    	curve.setCurveId(1);
+	    	Trade trade = new Trade("account","type",1.0);
+	    	trade.setTradeId(1);
 	    	BindingResult result = mock(BindingResult.class);
-	    	CurvePoint edited = new CurvePoint(0,2,0);
+	    	Trade edited = new Trade("edited","type",1.0);
 	    	
-	        controller.updateCurve(1, edited, result);
-	        verify(service).saveCurvePoint(edited);
+	        controller.updateTrade(1, edited, result);
+	        verify(service).saveTrade(edited);
 	    }
 
 
 	    @Test
 	    void updateNull() {
-	    	CurvePoint curve = new CurvePoint(0,0,0);
+	    	Trade trade = new Trade("account","type",1.0);
 	    	BindingResult result = mock(BindingResult.class);
-	    	ModelAndView modelAndView = new ModelAndView("curvePoint/update");
+	    	ModelAndView modelAndView = new ModelAndView("rating/update");
 	    	
-	        assertThat(controller.updateCurve(-50,curve, result) == modelAndView);
+	        assertThat(controller.updateTrade(-50,trade, result)== modelAndView);
 	        
 	    }
 	    
 	    @Test
 	    void deleteTest() throws Exception {
 	    	
-	    	CurvePoint curve = new CurvePoint(0,0,0);
-	    	curve.setCurveId(1);
+	    	Trade trade = new Trade("account","type",1.0);
+	    	trade.setTradeId(1);
 	    	
-	        when(service.getCurvePointById(1)).thenReturn(Optional.of(curve));
+	        when(service.getTradeById(1)).thenReturn(Optional.of(trade));
 
-	        controller.deleteCurve(1);
+	        controller.deleteTrade(1);
 	        
-	        verify(service).deleteCurvePointById(1);
+	        verify(service).deleteTradeById(1);
 	    }
 	    
 	    @Test
 	    void deleteNull() {	    	
-	        assertThrows(IllegalArgumentException.class, () -> controller.deleteCurve(-50));
+	        assertThrows(IllegalArgumentException.class, () -> controller.deleteTrade(-50));
 	        
 	    }
 

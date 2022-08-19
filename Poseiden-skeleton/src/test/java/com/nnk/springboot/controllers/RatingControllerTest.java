@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,11 +47,11 @@ class RatingControllerTest {
 
 	    @Test
 	    void addTestNull() {
-	    	Rating bid = null;
+	    	Rating rating = null;
 	    	BindingResult result = mock(BindingResult.class);
 	    	ModelAndView modelAndView = new ModelAndView("bidList/add");
 	    	
-	        assertThat(controller.validate(bid, result)== modelAndView);
+	        assertThat(controller.validate(rating, result)== modelAndView);
 	        
 	    }
 	    

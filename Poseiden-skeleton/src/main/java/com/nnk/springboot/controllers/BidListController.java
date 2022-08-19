@@ -39,7 +39,7 @@ public class BidListController {
     	logger.info("Showing add form");
         return new ModelAndView("bidList/add");
     }
-
+    
     @PostMapping("/bidList/validate")
     public ModelAndView validate(@Valid BidList bid, BindingResult result) {
     	if (!result.hasErrors()) {

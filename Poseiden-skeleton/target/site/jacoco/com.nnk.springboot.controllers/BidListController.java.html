@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 <span class="nc" id="L39">    	logger.info(&quot;Showing add form&quot;);</span>
 <span class="nc" id="L40">        return new ModelAndView(&quot;bidList/add&quot;);</span>
     }
-
+    
     @PostMapping(&quot;/bidList/validate&quot;)
     public ModelAndView validate(@Valid BidList bid, BindingResult result) {
 <span class="pc bpc" id="L45" title="1 of 2 branches missed.">    	if (!result.hasErrors()) {</span>

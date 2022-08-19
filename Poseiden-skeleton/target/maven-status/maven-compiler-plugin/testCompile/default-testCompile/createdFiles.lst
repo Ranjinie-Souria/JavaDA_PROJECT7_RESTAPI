@@ -1,6 +1,6 @@
-com\nnk\springboot\controllers\BidListControllerTestIT.class
 com\nnk\springboot\controllers\BidListControllerTest.class
 com\nnk\springboot\controllers\RuleNameControllerTest.class
 com\nnk\springboot\controllers\CurveControllerTest.class
+com\nnk\springboot\controllers\BidListControllerTestIT.class
 com\nnk\springboot\controllers\CurveControllerTestIT.class
 com\nnk\springboot\controllers\RatingControllerTest.class

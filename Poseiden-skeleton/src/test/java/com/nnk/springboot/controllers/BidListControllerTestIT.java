@@ -36,10 +36,6 @@ class BidListControllerTestIT {
 	private MyUserDetails adminDetails = new MyUserDetails(new User(0,"admin","admin","admin","ADMIN"));
 	private MyUserDetails userDetails = new MyUserDetails(new User(1,"user","user","user","USER"));
 	
-	@AfterEach
-    public void cleanUpEach(){
-        System.out.println("After Each cleanUpEach() method called");
-    }
 	
 	@Test
 	void showHome() throws Exception {

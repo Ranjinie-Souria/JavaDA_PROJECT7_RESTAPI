@@ -45,7 +45,7 @@ class BidListControllerTest {
 	        verify(service).saveBidList(bid);
 	    }
 
-
+	    
 	    @Test
 	    void addTestNull() {
 	    	BidList bid = null;

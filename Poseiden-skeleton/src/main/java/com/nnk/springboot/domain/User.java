@@ -15,7 +15,9 @@ public class User {
     @Column(name="username")
     private String username;
 
-    @ValidPassword
+    @ValidPassword(message = "Password must be at least 8 characters long and 30 max."
+    		+ "Password must contain at least one uppercase letter."
+    		+ "Password must at least contain 1 number and 1 special character (allowed) : !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~)")
     @Column(name="password")
     private String password;
 
